@@ -1,0 +1,105 @@
+# # Python cache
+# __pycache__/
+# *.py[cod]
+# *.so
+
+# # Virtual environment
+# venv/
+# .env
+
+# # Jupyter Notebook checkpoints
+# .ipynb_checkpoints
+
+# # Model files
+# *.h5
+# *.tflite
+# *.pth
+# *.pt
+# *.onnx
+# *.joblib
+# *.pkl
+# model/
+# models/
+
+# # YOLO runs
+# runs/
+# predicted_images/
+# test_images/
+# Figure/
+
+# # Dataset files (if too large or private)
+# dataset/
+
+# # Label generation/output
+# *.txt
+# *.csv
+# *.json
+# *.log
+
+# # Streamlit-specific cache
+# .streamlit/
+# *.streamlit/
+
+# # OS files
+# .DS_Store
+# Thumbs.db
+
+# # Logs or temporary files
+# r.txt
+# *.tmp
+# *.bak
+
+# # VS Code and IDE settings
+# .vscode/
+# .idea/
+
+
+# Python cache
+__pycache__/
+*.py[cod]
+
+# Virtual environment
+venv/
+
+# Environment variables
+.env
+
+# Jupyter notebook checkpoints
+.ipynb_checkpoints
+
+# Model weights and artifacts
+*.h5
+*.tflite
+*.pt
+*.pth
+*.onnx
+*.pkl
+*.joblib
+model/
+models/
+
+# Dataset and outputs
+dataset/
+predicted_images/
+test_images/
+runs/
+Figure/
+
+# Temporary or generated files
+*.log
+*.tmp
+*.bak
+*.csv
+*.json
+r.txt
+
+# Streamlit cache
+.streamlit/
+
+# IDE/project settings
+.vscode/
+.idea/
+
+# OS-specific
+.DS_Store
+Thumbs.db
