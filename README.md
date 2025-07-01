@@ -52,6 +52,7 @@ Create a `.env` file with the following content:
 
 ```
 PLANTNET_API_KEY=your_api_key_here
+HF_TOKEN=your_api_key_here
 ```
 
 #### 4. Run the App
