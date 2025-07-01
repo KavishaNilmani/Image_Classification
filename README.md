@@ -1,4 +1,4 @@
-**Demo Document: Intelligent Species Classifier Website**
+# **Intelligent Species Classifier Website**
 
 ---
 
