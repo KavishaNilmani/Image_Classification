@@ -1,3 +1,4 @@
+# Imports and Setup
 import streamlit as st
 from ultralytics import YOLO
 from PIL import Image
@@ -20,7 +21,7 @@ ssl._create_default_https_context = ssl._create_unverified_context
 load_dotenv()
 PLANTNET_API_KEY = os.getenv("PLANTNET_API_KEY")
 
-# iNaturalist helper functions
+# Get Scientific Name from iNaturalist
 def get_scientific_name_from_common(common_name):
     url = f"https://api.inaturalist.org/v1/search?q={common_name}&sources=taxa"
     try:
@@ -40,6 +41,7 @@ def get_scientific_name_from_common(common_name):
 CACHE_DIR = "./models/hf_cache"
 os.makedirs(CACHE_DIR, exist_ok=True)
 
+# Model Loading
 class_model = YOLO("D:/OneDrive - Lowcode Minds Technology Pvt Ltd/Desktop/image_classifier_site/runs/classify/yolov8s-classifier9/weights/best.pt")
 identifier_model = MobileNetV2(weights="imagenet")
 
@@ -52,6 +54,7 @@ def load_bird_model():
 bird_processor, bird_model = load_bird_model()
 main_classes = ["birds", "fish", "mammal", "plant"]
 
+# Bird Classifier Function
 def classify_bird(image_bytes):
     image = Image.open(io.BytesIO(image_bytes)).convert("RGB")
     inputs = bird_processor(images=image, return_tensors="pt")
@@ -63,6 +66,7 @@ def classify_bird(image_bytes):
     results.sort(key=lambda x: x["score"], reverse=True)
     return results[:5]
 
+# Plant Classifier Function (Pl@ntNet)
 def identify_plant(image_bytes):
     if not PLANTNET_API_KEY:
         raise ValueError("Pl@ntNet API key not found.")
@@ -75,10 +79,12 @@ def identify_plant(image_bytes):
     response.raise_for_status()
     return response.json()
 
-st.set_page_config(page_title="🧠 Intelligent Species Classifier", layout="centered")
-st.title("🧠 Intelligent Species Identifier")
+# Streamlit UI Setup
+st.set_page_config(page_title="Intelligent Species Classifier", layout="centered")
+st.title("Intelligent Species Identifier")
 st.write("Upload an image to classify its type and get detailed information!")
 
+# Image Upload and Display
 uploaded_file = st.file_uploader("📄 Upload an image", type=["jpg", "jpeg", "png"])
 if not uploaded_file:
     st.stop()
@@ -86,6 +92,7 @@ if not uploaded_file:
 img = Image.open(uploaded_file).convert("RGB")
 st.image(img, caption="📷 Uploaded Image", use_column_width=True)
 
+# Main Classification Using YOLOv8
 with st.spinner("🔍 Classifying..."):
     result = class_model.predict(img, verbose=False)[0]
     top_index = result.probs.top1
@@ -94,10 +101,12 @@ with st.spinner("🔍 Classifying..."):
 
 st.markdown(f"### 🏷️ Predicted Class: **{class_name}** (Confidence: {confidence:.2f})")
 
+# Branch Based on Class
 if class_name.lower() not in main_classes:
     st.warning("⚠️ No description available for this image category.")
     st.stop()
 
+# If class = plant
 if class_name.lower() == "plant":
     st.write("🌿 Identifying plant species using Pl@ntNet...")
     try:
@@ -133,6 +142,7 @@ if class_name.lower() == "plant":
     except Exception as e:
         st.error(f"❌ Pl@ntNet error: {e}")
 
+# If class = bird
 elif class_name.lower() == "birds":
     st.write("🕊️ Identifying bird species using Hugging Face model...")
     try:
@@ -161,6 +171,7 @@ elif class_name.lower() == "birds":
     except Exception as e:
         st.error(f"❌ Bird classifier error: {e}")
 
+# Else (mammal/fish)
 else:
     st.write("🔎 Identifying object using MobileNetV2...")
     try:
